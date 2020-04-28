@@ -35,25 +35,50 @@
 #include <algorithm>
 
 using namespace std;
-class Solution
-{
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
 public:
-
-  vector<string> generateParenthesis(int n) 
-  {
-    std::vector<std::string> result;
-
-    
-  }
+struct cmp{  
+       bool operator()(ListNode *a,ListNode *b){
+          return a->val > b->val;
+       }
+};
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        priority_queue<ListNode*, vector<ListNode*>, cmp> pri_queue;
+        // 建立大小为k的小根堆
+        for(auto elem : lists){
+            if(elem) pri_queue.push(elem);
+        }
+        // 可以使用哑节点/哨兵节点
+        ListNode dummy(-1);
+        ListNode* p = &dummy;
+        // 开始出队
+        while(!pri_queue.empty()){
+            ListNode* top = pri_queue.top(); pri_queue.pop();
+            p->next = top; p = top;
+            if(top->next) pri_queue.push(top->next);
+        }
+        return dummy.next;  
+    }
 };
 
 int main()
 {
   Solution solution;
   
-  bool ret = solution.isValid("())");
+  vector<string> ret = solution.generateParenthesis(2);
   
-  std::cout<<"ret value["<<ret<<"]"<<std::endl;
+  for (auto &str : ret)
+  {
+    std::cout<<"ret value["<<str<<"]"<<std::endl;
+  }
 
   return 0;
 }
