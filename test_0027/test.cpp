@@ -65,41 +65,20 @@ for (int i = 0; i < len; i++) {
 using namespace std;
 class Solution {
 public:
-  int removeElement(vector<int>& nums, int val) 
-  {
-    int button_index = nums.size() - 1;
-    int index = 0;
-
-    if (nums.empty())
-    {
-      return 0;
+  vector<int> getNext(string p) {
+    int n = p.size(), k = -1, j = 0;
+    vector<int> next(n, -1);
+    while (j < n - 1) {
+        if (k == -1 || p[j] == p[k]) {
+            ++k; ++j;
+            //next[j] = (p[j] != p[k]) ? k : next[k];
+            next[j] = k;
+        } else {
+            k = next[k];
+        }
     }
-
-    while (index < button_index)
-    {
-      if (nums[button_index] == val)
-      {
-        button_index --;
-        continue;
-      }
-
-      if (nums[index] == val)
-      {
-        nums[index] = nums[button_index];
-        nums[button_index] = val;
-        button_index --;
-      }
-
-      index ++;
-    }
-
-    if (nums[index] == val)
-    {
-      index -= 1;
-    }
-
-    return index + 1;
-  }
+    return next;
+}
 
 
 };
@@ -108,13 +87,11 @@ int main()
 {
   Solution solution;
   
-  std::vector<int> nums = {1};
-
-  int ret = solution.removeElement(nums, 1);
+  std::vector<int> ret = solution.getNext({"abcdabd"});
   
-  for (int i = 0; i < ret ; i++)
+  for (auto & iter : ret)
   {
-    std::cout<<"ret:["<<nums[i]<<"]"<<std::endl;
+    std::cout<<"ret:["<<iter<<"]"<<std::endl;
   }
 
   return 0;
